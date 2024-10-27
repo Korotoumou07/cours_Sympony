@@ -1,0 +1,86 @@
+<?php
+
+namespace App\Repository;
+
+use App\Entity\User;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
+
+/**
+ * @extends ServiceEntityRepository<User>
+ */
+class UserRepository extends ServiceEntityRepository
+{
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, User::class);
+    }
+
+
+
+    //    /**
+    //     * @return User[] Returns an array of User objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('u')
+    //            ->andWhere('u.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('u.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?User
+    //    {
+    //        return $this->createQueryBuilder('u')
+    //            ->andWhere('u.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
+
+    /**
+     * Récupère tous les utilisateurs
+     *
+     * @return User[]
+     */
+    public function findAllUsers(): array
+    {
+        return $this->createQueryBuilder('u')
+            ->orderBy('u.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+    /**
+     * Récupère un utilisateur par son login
+     *
+     * @param string $login
+     * @return User|null
+     */
+    public function findOneByLogin(string $login): ?User
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.login = :login')
+            ->setParameter('login', $login)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
+     * Récupère tous les utilisateurs triés par leur nom
+     *
+     * @return User[]
+     */
+    public function findAllSortedByNom(): array
+    {
+        return $this->createQueryBuilder('u')
+            ->orderBy('u.nom', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+}
+

@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un nouveau client{% endblock %}
+
+{% block body %}
+    <h1>Ajouter un nouveau client</h1>
+
+    <!-- Affichage des messages d'erreur s'il y en a -->
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <form method="post" action="{{ path('app_client_add') }}" onsubmit="return validateForm()">
+        <div class="form-group">
+            <label for="surname">Nom</label>
+            <input type="text" class="form-control" id="surname" name="surname" placeholder="Entrez votre nom" required>
+            <div class="invalid-feedback">Ce champ est obligatoire.</div>
+        </div>
+
+        <div class="form-group">
+            <label for="telephone">Téléphone</label>
+            <input type="text" class="form-control" id="telephone" name="telephone" placeholder="Entrez votre téléphone" required>
+            <div class="invalid-feedback">Ce champ est obligatoire.</div>
+        </div>
+
+        <div class="form-group">
+            <label for="adresse">Adresse</label>
+            <input type="text" class="form-control" id="adresse" name="adresse" placeholder="Entrez votre adresse" required>
+            <div class="invalid-feedback">Ce champ est obligatoire.</div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Soumettre</button>
+    </form>
+{% endblock %}

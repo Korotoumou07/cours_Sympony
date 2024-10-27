@@ -1,0 +1,65 @@
+{# {% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Hello {{ controller_name }}! ✅</h1>
+
+    This friendly message is coming from:
+    <ul>
+        <li>Your controller at <code>C:/Users/kotic/my_project_Synfony2024/src/Controller/UserController.php</code></li>
+        <li>Your template at <code>C:/Users/kotic/my_project_Synfony2024/templates/user/index.html.twig</code></li>
+    </ul>
+</div>
+{% endblock %} #}
+{# templates/client/add.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Utilisateurs{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="mb-4">Liste des Utilisateurs</h1>
+
+        <!-- Button to add a new user -->
+        <div class="mb-3">
+            <a href="{{ path('app_user_add') }}" class="btn btn-primary">Ajouter un nouvel utilisateur</a>
+        </div>
+
+        <!-- User table -->
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Login</th>
+                    {# <th>Actions</th> #}
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user.nom }}</td>
+                        <td>{{ user.prenom }}</td>
+                        <td>{{ user.login }}</td>
+                        {# <td>
+                            <!-- Action buttons -->
+                            <a href="{{ path('app_user_detail', { 'id': user.id }) }}" class="btn btn-info btn-sm me-1">Voir</a>
+                            <a href="{{ path('app_user_edit', { 'id': user.id }) }}" class="btn btn-warning btn-sm">Modifier</a>
+                        </td> #}
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4" class="text-center">Aucun utilisateur trouvé.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

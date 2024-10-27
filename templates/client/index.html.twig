@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Clients{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="mb-4">Liste des Clients</h1>
+
+        <!-- Button to add a new client -->
+        <div class="mb-3">
+            <a href="{{ path('app_client_add') }}" class="btn btn-primary">Ajouter un nouveau client</a>
+        </div>
+
+        <!-- Clients table -->
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Téléphone</th>
+                    <th>Adresse</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for client in clients %}
+                    <tr>
+                        <td>{{ client.id }}</td>
+                        <td>{{ client.surname }}</td>
+                        <td>{{ client.telephone }}</td>
+                        <td>{{ client.adresse }}</td>
+                        <td>
+                            <a href="{{ path('app_client_dettes', { id: client.id }) }}" class="btn btn-info btn-sm">Voir les dettes</a>
+                        </td>
+                    </tr>
+                    
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center">Aucun client trouvé.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            
+        </table>
+        <!-- Liens de pagination -->
+<div class="d-flex justify-content-center">
+    {% if clients.hasPreviousPage() %}
+        <a href="{{ path('app_client', { page: clients.getCurrentPage() - 1 }) }}" class="btn btn-primary">Précédent</a>
+    {% endif %}
+    <span class="mx-2">Page {{ clients.getCurrentPage() }} sur {{ clients.getNbPages() }}</span>
+    {% if clients.hasNextPage() %}
+        <a href="{{ path('app_client', { page: clients.getCurrentPage() + 1 }) }}" class="btn btn-primary">Suivant</a>
+    {% endif %}
+</div>
+
+    </div>
+{% endblock %}

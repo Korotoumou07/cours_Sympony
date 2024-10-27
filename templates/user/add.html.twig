@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un nouvel utilisateur{% endblock %}
+
+{% block body %}
+    <h1>Ajouter un nouvel utilisateur</h1>
+
+    <!-- Affichage des messages d'erreur s'il y en a -->
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <form method="post" action="{{ path('app_user_add') }}" onsubmit="return validateUserForm()">
+        <div class="form-group">
+            <label for="nom">Nom</label>
+            <input type="text" class="form-control" id="nom" name="nom" placeholder="Entrez votre nom" required>
+            <div class="invalid-feedback">Ce champ est obligatoire.</div>
+        </div>
+
+        <div class="form-group">
+            <label for="prenom">Prénom</label>
+            <input type="text" class="form-control" id="prenom" name="prenom" placeholder="Entrez votre prénom" required>
+            <div class="invalid-feedback">Ce champ est obligatoire.</div>
+        </div>
+
+        <div class="form-group">
+            <label for="login">Login</label>
+            <input type="text" class="form-control" id="login" name="login" placeholder="Entrez votre login" required>
+            <div class="invalid-feedback">Ce champ est obligatoire.</div>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Entrez votre mot de passe" required>
+            <div class="invalid-feedback">Ce champ est obligatoire.</div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Soumettre</button>
+    </form>
+{% endblock %}

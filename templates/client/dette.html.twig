@@ -1,0 +1,57 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Dettes du Client{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <p><strong> Client:</strong> {{ client.surname }}</p>
+        <p><strong>Téléphone: </strong>{{ client.telephone }}</p>
+
+        <div class="d-flex justify-content-end mb-3">
+            <font color="red"><strong>Total :</font> {{ totalMontantRestant }}</strong>
+        </div>
+
+        <!-- Table of debts -->
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Date de Création</th>
+                    <th>Montant</th>
+                    <th>Montant Versé</th>
+                    <th>Montant Restant</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for dette in dettes %}
+                    <tr>
+                        <td>{{ dette.createAt ? dette.createAt|date('Y-m-d') : 'N/A' }}</td>
+                        <td>{{ dette.montant }}</td>
+                        <td>{{ dette.montantVerser }}</td>
+                        <td>{{ dette.montant - dette.montantVerser }}</td> <!-- Montant restant -->
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4" class="text-center">Aucune dette trouvée pour ce client.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Pagination links -->
+        <div class="pagination">
+            {% if dettes.hasPreviousPage %}
+                <a href="{{ path('app_client_dettes', { id: client.id, page: dettes.currentPage - 1 }) }}" class="btn btn-secondary">Précédent</a>
+            {% endif %}
+
+            Page {{ dettes.currentPage }} sur {{ dettes.nbPages }}
+
+            {% if dettes.hasNextPage %}
+                <a href="{{ path('app_client_dettes', { id: client.id, page: dettes.currentPage + 1 }) }}" class="btn btn-secondary">Suivant</a>
+            {% endif %}
+        </div>
+
+        <!-- Back link -->
+        <a href="{{ path('app_client') }}" class="btn btn-secondary mt-3">Retour à la liste des clients</a>
+    </div>
+{% endblock %}
