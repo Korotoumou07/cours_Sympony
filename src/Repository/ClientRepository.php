@@ -76,6 +76,26 @@ class ClientRepository extends ServiceEntityRepository
                ->setParameter('telephone', $telephone);
         }
 
-        return $qb->getQuery()->getResult();
+        return $qb->getQuery()
+                  ->getResult();
     }
+    
+    public function findClientsWithUserAccount(): array
+{
+    return $this->createQueryBuilder('c')
+                ->innerJoin('c.compte', 'u') // Joindre uniquement les clients ayant un utilisateur associé
+                ->getQuery()
+                ->getResult();
+}
+
+
+    
+
+    //     // Calculer le montant total des dettes restantes pour toutes les dettes du client
+//     $totalMontantRestant = $this->detteRepository->createQueryBuilder('d')
+//         ->select('SUM(d.montant - d.montantVerser) as total')
+//         ->where('d.client = :client')
+//         ->setParameter('client', $client)
+//         ->getQuery()
+//         ->getSingleScalarResult();
 }

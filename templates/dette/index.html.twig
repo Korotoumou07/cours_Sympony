@@ -27,9 +27,9 @@
     <div class="container mt-5">
      <a href="{{ path('app_dette_add') }}" class="btn btn-success">Ajouter une Dette</a>
 
-        <div class="d-flex justify-content-end mb-3">
+        {# <div class="d-flex justify-content-end mb-3">
             <font color="red"><strong>Total :</font> {{ totalMontantRestant }}</strong>
-        </div>
+        </div> #}
 
         <!-- Tableau des dettes -->
         <table class="table table-bordered table-striped">
@@ -43,7 +43,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for dette in dettes.currentPageResults %}
+                {% for dette in dettes %}
                     <tr>
                         <td>{{ dette.client.surname }}</td>
                         <td>{{ dette.createAt ? dette.createAt|date('Y-m-d') : 'N/A' }}</td>
@@ -60,7 +60,7 @@
         </table>
 
         <!-- Liens de pagination -->
-        <div class="pagination">
+        {# <div class="pagination">
             {% if dettes.hasPreviousPage %}
                 <a href="{{ path('app_dette', { page: dettes.currentPage - 1 }) }}" class="btn btn-secondary">Précédent</a>
             {% endif %}
@@ -70,6 +70,6 @@
             {% if dettes.hasNextPage %}
                 <a href="{{ path('app_dette', { page: dettes.currentPage + 1 }) }}" class="btn btn-secondary">Suivant</a>
             {% endif %}
-        </div>
+        </div> #}
     </div>
 {% endblock %}

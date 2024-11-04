@@ -4,15 +4,23 @@
 
 {% block body %}
     <h1>Ajouter un nouveau client</h1>
+    <div class="card">
+        <img class="card-img-top" src="holder.js/100x180/" alt="Title" />
+        <div class="card-body">
+            <h4 class="card-title">Nouveau Client</h4>
+            {{form(formClient)}}
+        </div>
+    </div>
+    
 
-    <!-- Affichage des messages d'erreur s'il y en a -->
+    {# <!-- Affichage des messages d'erreur s'il y en a -->
     {% for message in app.flashes('error') %}
         <div class="alert alert-danger">
             {{ message }}
-        </div>
-    {% endfor %}
+        </div> #}
+    {# {% endfor %} #}
 
-    <form method="post" action="{{ path('app_client_add') }}" onsubmit="return validateForm()">
+    {# <form method="post" action="{{ path('app_client_add') }}" onsubmit="return validateForm()">
         <div class="form-group">
             <label for="surname">Nom</label>
             <input type="text" class="form-control" id="surname" name="surname" placeholder="Entrez votre nom" required>
@@ -32,5 +40,5 @@
         </div>
 
         <button type="submit" class="btn btn-primary">Soumettre</button>
-    </form>
+    </form> #}
 {% endblock %}

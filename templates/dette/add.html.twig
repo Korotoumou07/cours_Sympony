@@ -1,8 +1,17 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Ajouter une Dette{% endblock %}
-
 {% block body %}
+    <h1>Ajouter un nouveau client</h1>
+    <div class="card">
+        <img class="card-img-top" src="holder.js/100x180/" alt="Title" />
+        <div class="card-body">
+            <h4 class="card-title">Nouveau Dette</h4>
+            {{form(formDette)}}
+        </div>
+    </div>
+
+{# {% block body %}
     <h1>Ajouter une nouvelle Dette</h1>
 
     <!-- Affichage des messages d'erreur s'il y en a -->
@@ -42,6 +51,6 @@
             <div class="invalid-feedback">Ce champ est obligatoire.</div>
         </div> #}
 
-        <button type="submit" class="btn btn-primary">Soumettre</button>
-    </form>
+        {# <button type="submit" class="btn btn-primary">Soumettre</button>
+    </form> #} 
 {% endblock %}

@@ -66,4 +66,23 @@ class DetteRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    public function findByTotalMontantRestant(Client $client): float
+{
+    return (float) $this->createQueryBuilder('d')
+        ->select('SUM(d.montant - d.montantVerser) as total')
+        ->where('d.client = :client')
+        ->setParameter('client', $client)
+        ->getQuery()
+        ->getSingleScalarResult();
+}
+public function findByDettesByClient(Client $client): array
+    {
+        return $this->createQueryBuilder('d')
+            ->where('d.client = :client')
+            ->setParameter('client', $client)
+            ->orderBy('d.createAt', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
 }

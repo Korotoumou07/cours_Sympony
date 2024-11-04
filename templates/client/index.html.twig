@@ -6,6 +6,10 @@
     <div class="container mt-5">
         <h1 class="mb-4">Liste des Clients</h1>
 
+        {# <div >
+            {{form(searchClientForm)}}
+        </div> #}
+
         <!-- Button to add a new client -->
         <div class="mb-3">
             <a href="{{ path('app_client_add') }}" class="btn btn-primary">Ajouter un nouveau client</a>
@@ -42,8 +46,16 @@
             </tbody>
             
         </table>
+        <div class="pagination">
+    {% if currentPage > 1 %}
+        <a href="{{ path('client', { page: currentPage - 1 }) }}">Précédent</a>
+    {% endif %}
+    {% if currentPage < maxPages %}
+        <a href="{{ path('client', { page: currentPage + 1 }) }}">Suivant</a>
+    {% endif %}
+</div>
         <!-- Liens de pagination -->
-<div class="d-flex justify-content-center">
+{# <div class="d-flex justify-content-center">
     {% if clients.hasPreviousPage() %}
         <a href="{{ path('app_client', { page: clients.getCurrentPage() - 1 }) }}" class="btn btn-primary">Précédent</a>
     {% endif %}
@@ -51,7 +63,7 @@
     {% if clients.hasNextPage() %}
         <a href="{{ path('app_client', { page: clients.getCurrentPage() + 1 }) }}" class="btn btn-primary">Suivant</a>
     {% endif %}
-</div>
+</div> #}
 
     </div>
 {% endblock %}

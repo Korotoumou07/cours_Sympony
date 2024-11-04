@@ -39,7 +39,7 @@
         </table>
 
         <!-- Pagination links -->
-        <div class="pagination">
+        {# <div class="pagination">
             {% if dettes.hasPreviousPage %}
                 <a href="{{ path('app_client_dettes', { id: client.id, page: dettes.currentPage - 1 }) }}" class="btn btn-secondary">Précédent</a>
             {% endif %}
@@ -49,9 +49,18 @@
             {% if dettes.hasNextPage %}
                 <a href="{{ path('app_client_dettes', { id: client.id, page: dettes.currentPage + 1 }) }}" class="btn btn-secondary">Suivant</a>
             {% endif %}
-        </div>
+        </div> #}
+        <div class="pagination">
+    {% if currentPage > 1 %}
+        <a href="{{ path('app_client_dettes', { id: client.id, page: currentPage - 1 }) }}">Précédent</a>
+    {% endif %}
+    {% if currentPage < maxPages %}
+        <a href="{{ path('app_client_dettes', { id: client.id, page: currentPage + 1 }) }}">Suivant</a>
+    {% endif %}
+</div>
+
 
         <!-- Back link -->
-        <a href="{{ path('app_client') }}" class="btn btn-secondary mt-3">Retour à la liste des clients</a>
+        <a href="{{ path('client') }}" class="btn btn-secondary mt-3">Retour à la liste des clients</a>
     </div>
 {% endblock %}
