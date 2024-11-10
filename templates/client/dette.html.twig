@@ -38,26 +38,28 @@
             </tbody>
         </table>
 
-        <!-- Pagination links -->
-        {# <div class="pagination">
-            {% if dettes.hasPreviousPage %}
-                <a href="{{ path('app_client_dettes', { id: client.id, page: dettes.currentPage - 1 }) }}" class="btn btn-secondary">Précédent</a>
-            {% endif %}
-
-            Page {{ dettes.currentPage }} sur {{ dettes.nbPages }}
-
-            {% if dettes.hasNextPage %}
-                <a href="{{ path('app_client_dettes', { id: client.id, page: dettes.currentPage + 1 }) }}" class="btn btn-secondary">Suivant</a>
-            {% endif %}
-        </div> #}
-        <div class="pagination">
-    {% if currentPage > 1 %}
-        <a href="{{ path('app_client_dettes', { id: client.id, page: currentPage - 1 }) }}">Précédent</a>
-    {% endif %}
-    {% if currentPage < maxPages %}
-        <a href="{{ path('app_client_dettes', { id: client.id, page: currentPage + 1 }) }}">Suivant</a>
-    {% endif %}
-</div>
+        <nav aria-label="Page navigation" class="mt-2">
+                    <ul
+                        class="pagination float-end    "
+                    >
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                         {% for i in 1..nbrePages %}
+                        <li class="page-item  {{i == page ? 'active' : ''}}" aria-current="page">
+                            <a class="page-link" href="?page={{i}}">{{i}}</a>
+                        </li>
+                         {% endfor %}  
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
 
 
         <!-- Back link -->

@@ -6,18 +6,58 @@
     class="container mb-5" 
 >
     <div class="card mt-5">
-        <div class="card-header">Liste des Dettes</div>
+        <div class="card-header">Liste des Paiements</div>
         <div class="card-body p-3">
-        <div class="row my-2 d-flex justify-content-end">
-        <a href="#"
-                                type="button"
-                                class="btn btn-outline-dark col-1"
-                            >
-                                Create
-                            </a>
+        <div class="row">
+        <div class="col-6">
+        <div class="row my-2">
+         <div class="col-3">Nom et Prenom</div>
+         <div class="col">{{dette.client.user.nom ~ " " ~ dette.client.user.prenom }}</div>
+        </div>
+        <div class="row">
+        <div class="col-3">Telephone</div>
+         <div class="col">{{dette.client.telephone}}</div>
+        </div>
 
-                        
-        </div> 
+        </div>
+        
+        <div class="col-6">
+        <div class="row my-2">
+         <div class="col-5">Montant de la Dette</div>
+         <div class="col">{{dette.montant }}</div>
+        </div>
+        <div class="row">
+        <div class="col-5">Montant Verse</div>
+         <div class="col">{{dette.montantVerse}}</div>
+        </div>
+
+        </div>
+        
+        
+        </div>
+
+        <div class="my-2">
+        {% for message in app.flashes('error') %}
+        
+        <div class="alert alert-danger"> {{ message }} </div>
+           {% endfor %}
+        {{form_start(form,{'attr':{'class':'d-flex row gy-2 gx-3 align-items-center'}})}}
+             <div class="col-auto">
+
+                    <label class="visually-hidden" for="autoSizingInput">Name</label>
+                    {{form_widget(form.montant,{'attr':{'disabled':disabled}})}}
+
+                </div>
+                <div class="col-auto">
+
+                    <label class="visually-hidden" for="autoSizingInput">Name</label>
+                        {{form_widget(form.save,{'attr':{'disabled':disabled}})}}
+                    
+
+                </div>
+        {{form_end(form)}}
+        </div>
+
             <div
                 class="table-responsive"
             >
@@ -27,31 +67,15 @@
                     <thead>
                         <tr>
                             <th scope="col">Date</th>
-                            <th scope="col">Client</th>
-                            <th scope="col">Telephone</th>
                             <th scope="col">Montant</th>
-                            <th scope="col">MontantVerse</th>
-                            <th scope="col">Action</th>
-    
                         </tr>
                     </thead>
                     <tbody>
-                    {% for dette in dettes %}
+                    {% for paiement in paiements %}
                         <tr class="">
                                   
-                                    <td scope="row">{{dette.dateAt|date('d-m-Y')}}</td>
-                                    <td scope="row">{{dette.client.surname}}</td>
-                                    <td scope="row">{{dette.client.telephone}}</td>
-                                    <td>{{dette.montant}}</td>
-                                    <td>{{dette.montantVerse}}</td>
-                                    <td><a
-                                        href="{{path("paiement.index",{idDette:dette.id})}}"
-                                        type="button"
-                                        class="btn btn-outline-dark"
-                                    >
-                                        Details
-                                    </a>
-                                    </td>
+                                    <td scope="row">{{paiement.dateAt|date('d-m-Y')}}</td>
+                                    <td scope="row">{{paiement.montant}}</td>
                         </tr>
                     {% else %}
                         Pas de clients

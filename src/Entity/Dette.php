@@ -3,8 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\DetteRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: DetteRepository::class)]
 class Dette
@@ -15,26 +16,28 @@ class Dette
     private ?int $id = null;
 
     #[ORM\Column]
-    #[Assert\NotBlank(message:'Le montant est obligatoire')]
     private ?float $montant = null;
 
     #[ORM\Column]
-    #[Assert\NotBlank(message:'La date est obligatoire')]
-    private ?\DateTimeImmutable $createAt = null;
+    private ?float $montantVerse = null;
 
     #[ORM\Column]
-    #[Assert\NotBlank(message:'Le montant Verser est obligatoire')]
-    private ?float $montantVerser = null;
+    private ?\DateTimeImmutable $dateAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'dettes')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotBlank(message:'Le client est obligatoire')]
     private ?Client $client = null;
 
+    /**
+     * @var Collection<int, Paiement>
+     */
+    #[ORM\OneToMany(targetEntity: Paiement::class, mappedBy: 'dette',cascade: ['persist', 'remove'])]
+    private Collection $paiements;
+
     public function __construct()
-{
-    $this->createAt = new \DateTimeImmutable();
-}
+    {
+        $this->paiements = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -53,26 +56,26 @@ class Dette
         return $this;
     }
 
-    public function getCreateAt(): ?\DateTimeInterface
+    public function getMontantVerse(): ?float
     {
-        return $this->createAt;
+        return $this->montantVerse;
     }
 
-    public function setCreateAt(\DateTimeInterface $createAt): self
+    public function setMontantVerse(float $montantVerse): static
     {
-        $this->createAt = $createAt;
+        $this->montantVerse = $montantVerse;
 
         return $this;
     }
 
-    public function getMontantVerser(): ?float
+    public function getDateAt(): ?\DateTimeImmutable
     {
-        return $this->montantVerser;
+        return $this->dateAt;
     }
 
-    public function setMontantVerser(float $montantVerser): static
+    public function setDateAt(\DateTimeImmutable $dateAt): static
     {
-        $this->montantVerser = $montantVerser;
+        $this->dateAt = $dateAt;
 
         return $this;
     }
@@ -85,6 +88,36 @@ class Dette
     public function setClient(?Client $client): static
     {
         $this->client = $client;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Paiement>
+     */
+    public function getPaiements(): Collection
+    {
+        return $this->paiements;
+    }
+
+    public function addPaiement(Paiement $paiement): static
+    {
+        if (!$this->paiements->contains($paiement)) {
+            $this->paiements->add($paiement);
+            $paiement->setDette($this);
+        }
+
+        return $this;
+    }
+
+    public function removePaiement(Paiement $paiement): static
+    {
+        if ($this->paiements->removeElement($paiement)) {
+            // set the owning side to null (unless already changed)
+            if ($paiement->getDette() === $this) {
+                $paiement->setDette(null);
+            }
+        }
 
         return $this;
     }

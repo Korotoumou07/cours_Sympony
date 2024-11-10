@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Entity;
+namespace App\Dto;
 
-class ClientFormSearch{
+use Symfony\Bundle\MakerBundle\Str;
 
-
+class ClientFormSearch {
 
     private ?string $surname = null;
     private ?string $telephone = null;
@@ -33,6 +33,7 @@ class ClientFormSearch{
 
         return $this;
     }
+
     public function getStatut(): ?string
     {
         return $this->statut;
@@ -45,10 +46,4 @@ class ClientFormSearch{
         return $this;
     }
 
-
 }
-
-?>
-
-
-

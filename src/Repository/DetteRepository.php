@@ -3,9 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Dette;
-use App\Entity\Client;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * @extends ServiceEntityRepository<Dette>
@@ -17,20 +17,40 @@ class DetteRepository extends ServiceEntityRepository
         parent::__construct($registry, Dette::class);
     }
 
-    //    /**
-    //     * @return Dette[] Returns an array of Dette objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('d')
-    //            ->andWhere('d.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('d.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+       /**
+        * @return Paginator Returns an array of Dette objects
+        */
+       public function findByClient($idClient,int $page=1,int $limit=3): Paginator
+     {
+         $query=$this->createQueryBuilder('d')
+
+             ->andWhere('d.client = :val')
+              ->setParameter('val', $idClient)
+           ->orderBy('d.id', 'ASC')
+           ->setFirstResult(($page-1)*$limit)
+           ->setMaxResults($limit)
+               ->getQuery();
+
+         $paginator = new Paginator($query);
+         return $paginator;
+      }
+
+      /**
+        * @return Paginator Returns an array of Dette objects
+        */
+        public function findAllDettes(int $page=1,int $limit=3): Paginator
+        {
+            $query=$this->createQueryBuilder('d')
+   
+              ->orderBy('d.id', 'ASC')
+              ->setFirstResult(($page-1)*$limit)
+              ->setMaxResults($limit)
+                  ->getQuery();
+   
+            $paginator = new Paginator($query);
+            return $paginator;
+         }
+   
 
     //    public function findOneBySomeField($value): ?Dette
     //    {
@@ -41,48 +61,4 @@ class DetteRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
-
-    /**
-     * Récupère toutes les dettes d'un client donné
-     *
-     * @param Client $client
-     * @return Dette[]
-     */
-    // public function findByClient(Client $client): array
-    // {
-    //     return $this->createQueryBuilder('d')
-    //         ->andWhere('d.client = :client')
-    //         ->setParameter('client', $client)
-    //         ->orderBy('d.createAt', 'DESC')
-    //         ->getQuery()
-    //         ->getResult();
-    // }
-    public function findByClientId($clientId)
-    {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.client = :clientId')
-            ->setParameter('clientId', $clientId)
-            // ->orderBy('d.date', 'ASC') // Tri par date ou autre critère
-            ->getQuery()
-            ->getResult();
-    }
-    public function findByTotalMontantRestant(Client $client): float
-{
-    return (float) $this->createQueryBuilder('d')
-        ->select('SUM(d.montant - d.montantVerser) as total')
-        ->where('d.client = :client')
-        ->setParameter('client', $client)
-        ->getQuery()
-        ->getSingleScalarResult();
-}
-public function findByDettesByClient(Client $client): array
-    {
-        return $this->createQueryBuilder('d')
-            ->where('d.client = :client')
-            ->setParameter('client', $client)
-            ->orderBy('d.createAt', 'ASC')
-            ->getQuery()
-            ->getResult();
-    }
-
 }

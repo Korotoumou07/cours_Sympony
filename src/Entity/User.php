@@ -4,11 +4,13 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_LOGIN', fields: ['login'])]
+#[UniqueEntity(fields: ['login'], message: 'There is already an account with this login')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -22,7 +24,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var list<string> The user roles
      */
-    #[ORM\Column]
+    //#[ORM\Column]
     private array $roles = [];
 
     /**
@@ -34,8 +36,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 25)]
     private ?string $nom = null;
 
-    #[ORM\Column(length: 30)]
+    #[ORM\Column(length: 25)]
     private ?string $prenom = null;
+
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?Client $client = null;
 
     public function getId(): ?int
     {
@@ -71,23 +76,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
+        //$roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        // $roles[] = 'ROLE_USER';
+        //$roles[] = 'ROLE_USER';
 
-        // return array_unique($roles);
-        return $roles;
+        //return array_unique($roles);
+        return [];
     }
 
     /**
-     * @param list<string> $roles
+      @param list<string> $roles
      */
-    public function setRoles(array $roles): static
-    {
-        $this->roles = $roles;
+   // public function setRoles(array $roles): static
+    //{
+        //$this->roles = $roles;
 
-        return $this;
-    }
+        //return $this;
+    //}
 
     /**
      * @see PasswordAuthenticatedUserInterface
@@ -133,6 +138,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPrenom(string $prenom): static
     {
         $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Client $client): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($client === null && $this->client !== null) {
+            $this->client->setUser(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($client !== null && $client->getUser() !== $this) {
+            $client->setUser($this);
+        }
+
+        $this->client = $client;
 
         return $this;
     }

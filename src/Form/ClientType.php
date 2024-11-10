@@ -1,15 +1,13 @@
 <?php
 
 namespace App\Form;
-
-use App\Entity\User;
 use App\Entity\Client;
-use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Text;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ClientType extends AbstractType
@@ -18,17 +16,23 @@ class ClientType extends AbstractType
     {
         $builder
             ->add('surname',TextType::class,[
-                'required'=>false
+
+               'required'=>false
+              
             ])
             ->add('telephone',TextType::class,[
-                'required'=>false
+
+               'required'=>false
+               
             ])
-            ->add('adresse',TextType::class,[
+            ->add('adresse',TextareaType::class,[
+
+                "attr"=>[
+                    'rows'=>6
+                ],
                 'required'=>false
-            ])
-            ->add('compte', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'id',
+                
+
             ])
             ->add('save', SubmitType::class, [
                 'attr' => ['class' => 'btn btn-dark'],

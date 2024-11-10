@@ -2,18 +2,17 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ClientRepository;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 #[UniqueEntity('surname',message:'{value} existe en base de donnee')]
 #[UniqueEntity('telephone',message:'{value} existe en base de donnee')]
-
 class Client
 {
     #[ORM\Id]
@@ -21,25 +20,26 @@ class Client
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 20,unique:true)]
+    #[ORM\Column(length: 50,unique:true)]
     #[Assert\NotBlank(message:'Le surname est obligatoire')]
+
     private ?string $surname = null;
 
-    #[ORM\Column(length: 9,unique:true)]
+    #[ORM\Column(length: 11,unique:true)]
     #[Assert\NotBlank(message:'Le telephone est obligatoire')]
     private ?string $telephone = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank(message:'Adresse est obligatoire')]
     private ?string $adresse = null;
 
     #[ORM\OneToOne(inversedBy: 'client', cascade: ['persist', 'remove'])]
-    private ?User $compte = null;
+    private ?User $user = null;
 
     /**
      * @var Collection<int, Dette>
      */
-    #[ORM\OneToMany(targetEntity: Dette::class, mappedBy: 'client',cascade:['persist','remove'])]
+    #[ORM\OneToMany(targetEntity: Dette::class, mappedBy: 'client',cascade: ['persist', 'remove'])]
     private Collection $dettes;
 
     public function __construct()
@@ -88,14 +88,14 @@ class Client
         return $this;
     }
 
-    public function getCompte(): ?User
+    public function getUser(): ?User
     {
-        return $this->compte;
+        return $this->user;
     }
 
-    public function setCompte(?User $compte): static
+    public function setUser(?User $user): static
     {
-        $this->compte = $compte;
+        $this->user = $user;
 
         return $this;
     }

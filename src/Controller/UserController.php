@@ -15,13 +15,22 @@ class UserController extends AbstractController
 {
 
     #[Route('/user', name: 'user')]
-    public function index(UserRepository $userRepository): Response
+    public function index(UserRepository $userRepository,Request $request): Response
     {
         // Récupère la liste des clients
-        $users = $userRepository->findAll();
+        // $users = $userRepository->findAll();
+        $page = $request->query->getInt('page',1);
+        $limit=5;
+        $users=$userRepository->findAllUsers($page,$limit);
+        $count=$users->count();
+
+        $nbrePages=ceil($count/$limit);
+        
 
         return $this->render('user/index.html.twig', [
             'users' => $users,
+            'nbrePages'=>$nbrePages,
+            'page'=>$page
         ]);
     }
 
